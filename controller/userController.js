@@ -1,5 +1,5 @@
-import { hashPassword } from "../authentication/bcrypt.js";
-import { userCreateServices } from "../services/userServices.js";
+import { comparePassword, hashPassword } from "../authentication/bcrypt.js";
+import { userCreateServices, userLoginServices } from "../services/userServices.js";
 
 export let userCreateController =async (req,res) => {
     let {username,email,password}=req.body;
@@ -17,5 +17,21 @@ export let userCreateController =async (req,res) => {
         }
     } catch (error) {
         console.log(`errro occured at userCreateController ${error.message}`);
+    }
+}
+export let userLoginController =async (req,res) => {
+    let {email,password}=req.body;
+    try {
+        let dbPass = await userLoginServices(email);
+        let log = await comparePassword(password,dbPass)
+        console.log(log)
+        if (log) {
+            res.send(`user login succesfully`)
+        } else {
+            res.send('user not login')
+        }
+      
+    } catch (error) {
+        console.log(`error occured at userLoginController ${error.message}`);
     }
 }

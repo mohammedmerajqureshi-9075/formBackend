@@ -10,3 +10,12 @@ export let userCreateServices =async (username,email,password) => {
         console.log(`error occured at user create services ${error.message}`)
     }
 }
+export let userLoginServices =async (email) => {
+    try {
+        let dbPass = await userModel.findOne({email});
+        return dbPass.password;
+
+    } catch (error) {
+        console.log(`error occured at user login servics ${error.message}`)
+    }
+}
